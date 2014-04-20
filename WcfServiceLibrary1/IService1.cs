@@ -8,7 +8,7 @@ using System.Text;
 namespace WcfServiceLibrary1
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
-    [ServiceContract(SessionMode=SessionMode.Required,CallbackContract=typeof(ISampleClientContract))]
+    [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(ISampleClientContract))]
     public interface IService1
     {
         [OperationContract]
@@ -18,13 +18,15 @@ namespace WcfServiceLibrary1
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
         // TODO: Add your service operations here
-          [OperationContract(IsOneWay = false, IsInitiating=true)]
-    void Subscribe();
-    [OperationContract(IsOneWay = false, IsTerminating=true)]
-    void Unsubscribe();
-    [OperationContract(IsOneWay = true)]
-    void PublishPriceChange(string item, double price, 
-                                     double change);
+        [OperationContract(IsOneWay = false, IsInitiating = true)]
+        void Subscribe();
+
+        [OperationContract(IsOneWay = false, IsTerminating = true)]
+        void Unsubscribe();
+
+        [OperationContract(IsOneWay = true)]
+        void PublishPriceChange(string item, double price,
+                                        double change);
 
 
     }

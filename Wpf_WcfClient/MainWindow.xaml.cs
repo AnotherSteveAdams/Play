@@ -23,6 +23,8 @@ namespace Wpf_WcfClient
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWCFTestVM();
+
         }
     }
 }
