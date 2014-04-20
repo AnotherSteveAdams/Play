@@ -44,11 +44,14 @@ namespace Wpf_WcfClient
             }
         }
 
-        public ObservableCollection<string> TheList = new ObservableCollection<string>();
-
+        public ObservableCollection<string> _theList = new ObservableCollection<string>();
+        public ObservableCollection<string> TheList
+        {
+            get { return _theList;  }
+        }
         public void PriceChange(string item, double price, double change)
         {
-            TheList.Add(item + " " + price + " " + change);
+            _theList.Add(item + " " + price + " " + change);
         }
     }
 }

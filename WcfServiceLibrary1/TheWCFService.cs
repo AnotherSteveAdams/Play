@@ -79,7 +79,14 @@ namespace WcfServiceLibrary1
 
         public void PriceChangeHandler(object sender, PriceChangeEventArgs e)
         {
-            callback.PriceChange(e.Item, e.Price, e.Change);
+            try
+            {
+                callback.PriceChange(e.Item, e.Price, e.Change);
+            }
+            catch (CommunicationObjectAbortedException ex)
+            {
+                PriceChangeEvent -= PriceChangeHandler;
+            }
         }
 
 
