@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -9,7 +10,7 @@ using WcfServiceLibrary1;
 
 namespace Wpf_WcfClient
 {
-    class MainWCFTestVM : ISampleClientContract
+    class MainWCFTestVM : ISampleClientContract, INotifyPropertyChanged
     {
         public MainWCFTestVM()
         {
@@ -27,6 +28,40 @@ namespace Wpf_WcfClient
             
 
         }
+
+        ~MainWCFTestVM()
+        {
+            c.Unsubscribe();
+        }
+
+        public string Message
+        {
+            get;
+            set;
+        }
+
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set 
+            { 
+                _errorMessage = value; 
+                if (_errorMessage != "")
+                {
+                    InError = true;
+                    OnPropertyChanged("InError");
+                }
+                OnPropertyChanged("ErrorMessage"); 
+            }
+        }
+
+        public bool InError
+        {
+            get;
+            set;
+        }
+
         IService1 c;
         ICommand _myCommand;
         public ICommand CommandSendPrice
@@ -37,7 +72,12 @@ namespace Wpf_WcfClient
                 {
                     _myCommand = new RelayCommand(p =>
                     {
-                        c.PublishPriceChange("ABC", 123, 32);
+                        if (Message.Contains("Bloody"))
+                        {
+                            ErrorMessage = "Don't say the word Bloody, okay !  Message was not sent";
+                            return;
+                        }
+                        c.PublishPriceChange(Message, 123, 32);
                     });
                 }
                 return _myCommand;
@@ -53,5 +93,13 @@ namespace Wpf_WcfClient
         {
             _theList.Add(item + " " + price + " " + change);
         }
+
+        private void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

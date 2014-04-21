@@ -41,16 +41,13 @@ namespace WcfServiceLibrary1
 
         ISampleClientContract callback = null;
 
-        PriceChangeEventHandler priceChangeHandler = null;
-
         //Clients call this service operation to subscribe.
         //A price change event handler is registered for this client instance.
 
         public void Subscribe()
         {
             callback = OperationContext.Current.GetCallbackChannel<ISampleClientContract>();
-            priceChangeHandler = new PriceChangeEventHandler(PriceChangeHandler);
-            PriceChangeEvent += priceChangeHandler;
+            PriceChangeEvent += PriceChangeHandler;
         }
 
         //Clients call this service operation to unsubscribe.
@@ -58,7 +55,7 @@ namespace WcfServiceLibrary1
 
         public void Unsubscribe()
         {
-            PriceChangeEvent -= priceChangeHandler;
+            PriceChangeEvent -= PriceChangeHandler;
         }
 
         //Information source clients call this service operation to report a price change.
