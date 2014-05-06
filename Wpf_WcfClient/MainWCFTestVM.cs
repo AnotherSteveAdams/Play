@@ -43,17 +43,21 @@ namespace Wpf_WcfClient
             var v = _factory.State;
             ((ICommunicationObject)_myservice).Faulted += MainWCFTestVM_Faulted;
 
-            try
+            //try
             {
                 _myservice.Subscribe();
                 StatusText = "Connected";
                 ServiceUp = true;
                 OnPropertyChanged("ServiceUp");
             }
-            catch (EndpointNotFoundException ex)
-            {
-            }
+            //catch (EndpointNotFoundException ex)
+            //{
+            //}
         }
+
+        // Add the unhandled exception handlers
+        // remove ping in interface
+        // make an base class to wrap up the reconnect logic.
 
         DuplexChannelFactory<IService1> _factory;
         void MainWCFTestVM_Faulted(object sender, EventArgs e)

@@ -45,7 +45,7 @@ namespace Wpf_WcfClient
         void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             // throw new NotImplementedException();
-            log.Error("Current_DispatcherUnhandledException");
+            log.Error("Current_DispatcherUnhandledException [" + e.Exception.Message + "] " + e.Exception.StackTrace);
             e.Handled = true;
         }
     }
