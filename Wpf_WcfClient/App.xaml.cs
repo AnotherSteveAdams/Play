@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,9 +14,12 @@ namespace Wpf_WcfClient
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnLoadCompleted(System.Windows.Navigation.NavigationEventArgs e)
+        private static readonly ILog log = LogManager.GetLogger(typeof(App));
+        protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnLoadCompleted(e);
+            base.OnStartup(e);
+            log4net.Config.XmlConfigurator.Configure();
+            log.Error("OnLoadCompleted setting up error handlers../.");
 
             // Add the event handler for handling UI thread exceptions to the event.
             // Application.ThreadException += new ThreadExceptionEventHandler(ExceptionDialog.UIThreadException);
@@ -25,6 +29,7 @@ namespace Wpf_WcfClient
             //// our handler.
             //Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             //// Add the event handler for handling non-UI thread exceptions to the event. 
             //AppDomain.CurrentDomain.UnhandledException +=
             //    new UnhandledExceptionEventHandler(MyApp.CurrentDomain_UnhandledException);
@@ -33,12 +38,15 @@ namespace Wpf_WcfClient
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             // throw new NotImplementedException();
+            log.Error("CurrentDomain_UnhandledException");
             
         }
 
         void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             // throw new NotImplementedException();
+            log.Error("Current_DispatcherUnhandledException");
+            e.Handled = true;
         }
     }
     

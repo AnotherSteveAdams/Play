@@ -24,10 +24,9 @@ namespace Wpf_WcfClient
     {
         public MainWCFTestVM()
         {
-
-            CreateChannel();
-
+            Task.Run(() => CreateChannel());
         }
+
         void CreateChannel()
         {
             var binding = new NetTcpBinding(SecurityMode.None);
@@ -41,21 +40,21 @@ namespace Wpf_WcfClient
                     "net.tcp://SteveX1:9966/TheWCFService/IService1"
                 );
             _myservice = _factory.CreateChannel();
-
+            var v = _factory.State;
             ((ICommunicationObject)_myservice).Faulted += MainWCFTestVM_Faulted;
 
             try
             {
                 _myservice.Subscribe();
+                StatusText = "Connected";
+                ServiceUp = true;
+                OnPropertyChanged("ServiceUp");
             }
             catch (EndpointNotFoundException ex)
             {
-
             }
-            StatusText = "Connected";
-            ServiceUp = true;
-            OnPropertyChanged("ServiceUp");
         }
+
         DuplexChannelFactory<IService1> _factory;
         void MainWCFTestVM_Faulted(object sender, EventArgs e)
         {
@@ -65,11 +64,13 @@ namespace Wpf_WcfClient
             ((ICommunicationObject)sender).Abort();
             if (sender is IService1)
             {
-                System.Threading.Thread.Sleep(500);
-                System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => CreateChannel()), null);
+                System.Threading.Thread.Sleep(2000);
+                Task.Run(() => CreateChannel());
+//                System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => CreateChannel()), null);
                 
             }
         }
+
         public string StatusText
         {
             get { return _statusText; }
@@ -165,7 +166,8 @@ namespace Wpf_WcfClient
         }
         public void PriceChange(string item, double price, double change)
         {
-            _theList.Add(item + " " + price + " " + change);
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => _theList.Add(item + " " + price + " " + change)), null);
+            //;
         }
 
         private void OnPropertyChanged(string property)
