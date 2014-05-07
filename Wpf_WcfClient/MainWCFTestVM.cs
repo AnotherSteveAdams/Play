@@ -11,15 +11,7 @@ using WcfServiceLibrary1;
 
 namespace Wpf_WcfClient
 {
-    class x : IObservable<string>
-    {
-
-        public IDisposable Subscribe(IObserver<string> observer)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
+ 
     class MainWCFTestVM : ISampleClientContract, INotifyPropertyChanged
     {
         public MainWCFTestVM()
