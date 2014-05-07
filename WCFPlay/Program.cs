@@ -31,7 +31,7 @@ namespace WCFPlay
         }
     }
    
-    class CallbackClass : ISampleClientContract
+    class CallbackClass : ISampleClientCallbackContract
     {
 
         [OperationContract(IsOneWay = true)]

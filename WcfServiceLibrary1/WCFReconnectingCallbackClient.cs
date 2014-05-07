@@ -19,7 +19,8 @@ namespace WcfServiceLibrary1
             throw new NotImplementedException();
         }
     }
-    
+
+    [ServiceContract(SessionMode = SessionMode.Required)]
     public interface IWCFSubscribableService
     {
         // TODO: Add your service operations here
@@ -31,7 +32,7 @@ namespace WcfServiceLibrary1
 
     }
 
-    class WCFReconnectingCallbackClient<TServerInterface, TCallbackInterface>
+    public class WCFReconnectingCallbackClient<TServerInterface, TCallbackInterface>
         where TServerInterface : class, IWCFSubscribableService
     {
         public WCFReconnectingCallbackClient()
@@ -44,7 +45,7 @@ namespace WcfServiceLibrary1
             _myservice.Unsubscribe();
         }
 
-        TServerInterface _myservice;
+        protected TServerInterface _myservice;
         void CreateChannel()
         {
             var binding = new NetTcpBinding(SecurityMode.None);

@@ -9,24 +9,23 @@ namespace WcfServiceLibrary1
 {
 
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
-    [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(ISampleClientContract))]
+    [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(ISampleClientCallbackContract))]
     public interface IService1 : IWCFSubscribableService
     {
-        [OperationContract]
+        [OperationContract(IsInitiating=false, IsTerminating=false)]
         string GetData(int value);
 
-        [OperationContract]
+        [OperationContract(IsInitiating = false, IsTerminating = false)]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
-        [OperationContract(IsOneWay = true)]
-        void PublishPriceChange(string item, double price,
-                                        double change);
+        [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
+        void PublishPriceChange(string item, double price, double change);
 
 
     }
 
 
-    public interface ISampleClientContract
+    public interface ISampleClientCallbackContract
     {
         [OperationContract(IsOneWay = true)]
         void PriceChange(string item, double price, double change);

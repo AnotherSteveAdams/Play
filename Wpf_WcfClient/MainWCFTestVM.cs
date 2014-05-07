@@ -12,69 +12,12 @@ using WcfServiceLibrary1;
 namespace Wpf_WcfClient
 {
  
-    class MainWCFTestVM : ISampleClientContract, INotifyPropertyChanged
+    class MainWCFTestVM : WCFReconnectingCallbackClient<IService1, ISampleClientCallbackContract>, ISampleClientCallbackContract, INotifyPropertyChanged
     {
-        public MainWCFTestVM()
-        {
-            Task.Run(() => CreateChannel());
-        }
-
-        void CreateChannel()
-        {
-            var binding = new NetTcpBinding(SecurityMode.None);
-            binding.SendTimeout = new TimeSpan(0, 0, 0, 3);
-            binding.ReceiveTimeout = new TimeSpan(0, 0, 0, 3); ;// TimeSpan.MaxValue;
-            binding.OpenTimeout = new TimeSpan(0, 0, 0, 3);
-            binding.CloseTimeout = new TimeSpan(0, 0, 0, 3); 
-            _factory = new DuplexChannelFactory<IService1>(
-                    this,
-                    binding,
-                    "net.tcp://SteveX1:9966/TheWCFService/IService1"
-                );
-            _myservice = _factory.CreateChannel();
-            var v = _factory.State;
-            ((ICommunicationObject)_myservice).Faulted += MainWCFTestVM_Faulted;
-
-            //try
-            {
-                _myservice.Subscribe();
-                StatusText = "Connected";
-                ServiceUp = true;
-                OnPropertyChanged("ServiceUp");
-            }
-            //catch (EndpointNotFoundException ex)
-            //{
-            //}
-        }
-
-        // Add the unhandled exception handlers
-        // remove ping in interface
-        // make an base class to wrap up the reconnect logic.
-
-        DuplexChannelFactory<IService1> _factory;
-        void MainWCFTestVM_Faulted(object sender, EventArgs e)
-        {
-            StatusText = "Faulted";
-            ServiceUp = false;
-            OnPropertyChanged("ServiceUp");
-            ((ICommunicationObject)sender).Abort();
-            if (sender is IService1)
-            {
-                System.Threading.Thread.Sleep(2000);
-                Task.Run(() => CreateChannel());
-//                System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => CreateChannel()), null);
-                
-            }
-        }
-
         public string StatusText
         {
             get { return _statusText; }
             set { _statusText = value; OnPropertyChanged("StatusText"); }
-        }
-        ~MainWCFTestVM()
-        {
-            _myservice.Unsubscribe();
         }
 
         public string Message
@@ -110,7 +53,6 @@ namespace Wpf_WcfClient
             set;
         }
 
-        IService1 _myservice;
         ICommand _myCommand;
         public ICommand CommandSendPrice
         {

@@ -39,14 +39,14 @@ namespace WcfServiceLibrary1
         public static event PriceChangeEventHandler PriceChangeEvent;
         public delegate void PriceChangeEventHandler(object sender, PriceChangeEventArgs e);
 
-        ISampleClientContract callback = null;
+        ISampleClientCallbackContract callback = null;
 
         //Clients call this service operation to subscribe.
         //A price change event handler is registered for this client instance.
 
         public void Subscribe()
         {
-            callback = OperationContext.Current.GetCallbackChannel<ISampleClientContract>();
+            callback = OperationContext.Current.GetCallbackChannel<ISampleClientCallbackContract>();
             PriceChangeEvent += PriceChangeHandler;
         }
 

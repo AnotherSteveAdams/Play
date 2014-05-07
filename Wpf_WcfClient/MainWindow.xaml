@@ -15,7 +15,7 @@
             <TextBox Text="{Binding Message}" Width="120" ></TextBox>
             <TextBlock>Price:</TextBlock>
             <TextBox Text="{Binding price}" Width="120" ></TextBox>
-            <Button IsEnabled="{Binding InError}"  Command="{Binding CommandSendPrice}"  Margin="2,0,2,0">Send the message</Button>
+            <Button  Command="{Binding CommandSendPrice}"  Margin="2,0,2,0">Send the message</Button>
         </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding TheList}"></ListBox>
         <TextBlock Grid.Row="2" Text="{Binding ErrorMessage}" FontSize="20"  Foreground="Red">
