@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +15,13 @@ namespace WcfServiceLibrary1
 {
     public enum SubscriptionId { First, Second } ;
 
+    [ServiceKnownType("GetKnownTypes", typeof(Helper))]
     [ServiceContract(SessionMode = SessionMode.Required)]
     public interface IWCFSubscribableService
     {
         // TODO: Add your service operations here
         [OperationContract(IsOneWay = false, IsInitiating = true)]
-        object Subscribe(SubscriptionId id);
+        IEnumerable<object> Subscribe(SubscriptionId id);
 
         [OperationContract(IsOneWay = false, IsTerminating = true)]
         void Unsubscribe();
@@ -30,6 +33,24 @@ namespace WcfServiceLibrary1
         [OperationContract]
         void PriceChange(IEnumerable<object> list);
     }
+    public class somethingToGo
+    {
+        public string sss { get; set; }
+    }
+
+    // This class has the method named GetKnownTypes that returns a generic IEnumerable. 
+    static class Helper
+    {
+        public static IEnumerable<Type> GetKnownTypes(ICustomAttributeProvider provider)
+        {
+            System.Collections.Generic.List<System.Type> knownTypes =
+                new System.Collections.Generic.List<System.Type>();
+            // Add any types to include here.
+            knownTypes.Add(typeof(somethingToGo));
+            return knownTypes;
+        }
+    }
+
 
     public class WCFReconnectingCallbackClient<TServerInterface, TCallbackInterface> : INotifyPropertyChanged
         where TServerInterface : class, IWCFSubscribableService
@@ -76,11 +97,17 @@ namespace WcfServiceLibrary1
             var v = _factory.State;
             ((ICommunicationObject)_myservice).Faulted += MainWCFTestVM_Faulted;
 
-            var v2 = _myservice.Subscribe(SubscriptionId.First);
+            var v1 = xxx(SubscriptionId.Second);
+            IEnumerable<object> v2 = _myservice.Subscribe(SubscriptionId.First);
             //StatusText = "Connected";
             ServiceUp = true;
         }
 
+        public IEnumerable<object> xxx(SubscriptionId id)
+        {
+            return new List<somethingToGo> {
+                new somethingToGo{sss = "to be returned" }};
+        }
         // Add the unhandled exception handlers
         // remove ping in interface
         // make an base class to wrap up the reconnect logic.
