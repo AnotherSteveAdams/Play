@@ -18,11 +18,17 @@ namespace WcfServiceLibrary1
     {
         // TODO: Add your service operations here
         [OperationContract(IsOneWay = false, IsInitiating = true)]
-        void Subscribe(SubscriptionId id);
+        string Subscribe(SubscriptionId id);
 
         [OperationContract(IsOneWay = false, IsTerminating = true)]
         void Unsubscribe();
 
+    }
+    [ServiceContract]
+    public interface ISampleClientCallbackContract
+    {
+        [OperationContract]
+        void PriceChange(IEnumerable<object> list);
     }
 
     public class WCFReconnectingCallbackClient<TServerInterface, TCallbackInterface> : INotifyPropertyChanged
@@ -70,7 +76,7 @@ namespace WcfServiceLibrary1
             var v = _factory.State;
             ((ICommunicationObject)_myservice).Faulted += MainWCFTestVM_Faulted;
 
-            _myservice.Subscribe(SubscriptionId.First);
+            var v2 = _myservice.Subscribe(SubscriptionId.First);
             //StatusText = "Connected";
             ServiceUp = true;
         }

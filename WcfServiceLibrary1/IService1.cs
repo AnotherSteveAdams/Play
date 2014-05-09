@@ -25,7 +25,7 @@ namespace WcfServiceLibrary1
     }
 
 
-    public interface ISampleClientCallbackContract
+    public interface ISampleBClientCallbackContract
     {
         [OperationContract(IsOneWay = true)]
         void PriceChange(IEnumerable<object> updatedObjects);

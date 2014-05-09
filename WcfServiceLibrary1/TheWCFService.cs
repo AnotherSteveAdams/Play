@@ -44,10 +44,11 @@ namespace WcfServiceLibrary1
         //Clients call this service operation to subscribe.
         //A price change event handler is registered for this client instance.
 
-        public void Subscribe(SubscriptionId id)
+        public string Subscribe(SubscriptionId id)
         {
             callback = OperationContext.Current.GetCallbackChannel<ISampleClientCallbackContract>();
             PriceChangeEvent += PriceChangeHandler;
+            return "abc";
         }
 
         //Clients call this service operation to unsubscribe.
