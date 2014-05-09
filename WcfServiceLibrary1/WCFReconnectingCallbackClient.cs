@@ -18,7 +18,7 @@ namespace WcfServiceLibrary1
     {
         // TODO: Add your service operations here
         [OperationContract(IsOneWay = false, IsInitiating = true)]
-        string Subscribe(SubscriptionId id);
+        object Subscribe(SubscriptionId id);
 
         [OperationContract(IsOneWay = false, IsTerminating = true)]
         void Unsubscribe();
