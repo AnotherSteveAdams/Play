@@ -1,8 +1,14 @@
 ﻿<Window x:Class="Wpf_WcfClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mine="clr-namespace:Wpf_WcfClient"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
+        <Grid.Resources>
+            <mine:VisibilityOfNotBoolConverter x:Key="VisibilityOfBool" />
+        </Grid.Resources>
+        
+        <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -15,7 +21,7 @@
             <TextBox Text="{Binding Message}" Width="120" ></TextBox>
             <TextBlock>Price:</TextBlock>
             <TextBox Text="{Binding price}" Width="120" ></TextBox>
-            <Button  Command="{Binding CommandSendPrice}"  Margin="2,0,2,0">Send the message</Button>
+            <Button  IsEnabled="{Binding ServiceUp}" Command="{Binding CommandSendPrice}"  Margin="2,0,2,0">Send the message</Button>
         </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding TheList}"></ListBox>
         <TextBlock Grid.Row="2" Text="{Binding ErrorMessage}" FontSize="20"  Foreground="Red">
@@ -46,5 +52,10 @@
 
         </TextBlock>
         <TextBlock Grid.Row="3" Text="{Binding StatusText}" />
+        </Grid>
+        <Border Visibility="{Binding ServiceUp, Converter={StaticResource VisibilityOfBool} }" 
+                Background="Salmon" Width="200" Height="150">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">SERVICE IS DOWN</TextBlock>
+        </Border>
     </Grid>
 </Window>

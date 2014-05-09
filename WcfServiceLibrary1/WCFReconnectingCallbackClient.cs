@@ -32,7 +32,7 @@ namespace WcfServiceLibrary1
 
     }
 
-    public class WCFReconnectingCallbackClient<TServerInterface, TCallbackInterface>
+    public class WCFReconnectingCallbackClient<TServerInterface, TCallbackInterface> : INotifyPropertyChanged
         where TServerInterface : class, IWCFSubscribableService
     {
         public WCFReconnectingCallbackClient()
@@ -44,6 +44,21 @@ namespace WcfServiceLibrary1
         {
             _myservice.Unsubscribe();
         }
+
+        private bool _serviceUp = false;
+        public bool ServiceUp
+        {
+            get { return _serviceUp;}
+            set { _serviceUp = value; OnPropertyChanged("ServiceUp"); }
+        }
+          
+        protected void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected TServerInterface _myservice;
         void CreateChannel()
@@ -64,7 +79,7 @@ namespace WcfServiceLibrary1
 
             _myservice.Subscribe();
             //StatusText = "Connected";
-            //ServiceUp = true;
+            ServiceUp = true;
         }
 
         // Add the unhandled exception handlers
@@ -75,7 +90,7 @@ namespace WcfServiceLibrary1
         void MainWCFTestVM_Faulted(object sender, EventArgs e)
         {
 //todo             StatusText = "Faulted";
-// todo            ServiceUp = false;
+            ServiceUp = false;
             ((ICommunicationObject)sender).Abort();
             if (sender is TServerInterface)
            {

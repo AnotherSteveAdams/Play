@@ -12,8 +12,18 @@ using WcfServiceLibrary1;
 namespace Wpf_WcfClient
 {
  
-    class MainWCFTestVM : WCFReconnectingCallbackClient<IService1, ISampleClientCallbackContract>, ISampleClientCallbackContract, INotifyPropertyChanged
+    class MainWCFTestVM : WCFReconnectingCallbackClient<IService1, ISampleClientCallbackContract>, ISampleClientCallbackContract
     {
+        public MainWCFTestVM()
+        {
+            PropertyChanged += MainWCFTestVM_PropertyChanged;
+        }
+
+        void MainWCFTestVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ServiceUp")
+                OnPropertyChanged("StatusText");
+        }
         public string StatusText
         {
             get { return _statusText; }
@@ -35,22 +45,11 @@ namespace Wpf_WcfClient
                 _errorMessage = value; 
                 if (_errorMessage != "")
                 {
-                    InError = true;
+                    //InError = true;
                     OnPropertyChanged("InError");
                 }
                 OnPropertyChanged("ErrorMessage"); 
             }
-        }
-
-        public bool ServiceUp
-        {
-            get;
-            set;
-        }
-        public bool InError
-        {
-            get;
-            set;
         }
 
         ICommand _myCommand;
@@ -108,13 +107,6 @@ namespace Wpf_WcfClient
             //;
         }
 
-        private void OnPropertyChanged(string property)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
         private string _statusText;
         private void test()
         {
