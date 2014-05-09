@@ -25,7 +25,7 @@ namespace WCFPlay
                     "net.tcp://SteveX1:9966/TheWCFService/IService1"
                 );
             IService1 c = factory.CreateChannel();
-            c.Subscribe();
+            c.Subscribe(SubscriptionId.First);
             c.PublishPriceChange("ABC",123,32);
             System.Threading.Thread.Sleep(1000000);
         }
@@ -35,7 +35,7 @@ namespace WCFPlay
     {
 
         [OperationContract(IsOneWay = true)]
-        public void PriceChange(string item, double price, double change)
+        public void PriceChange(IEnumerable<object> updatedObjects)
         {
             //throw new NotImplementedException();
         }

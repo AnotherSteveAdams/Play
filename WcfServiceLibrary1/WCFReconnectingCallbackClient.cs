@@ -11,21 +11,14 @@ using WcfServiceLibrary1;
 
 namespace WcfServiceLibrary1
 {
-    class x : IObservable<string>
-    {
-
-        public IDisposable Subscribe(IObserver<string> observer)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    public enum SubscriptionId { First, Second } ;
 
     [ServiceContract(SessionMode = SessionMode.Required)]
     public interface IWCFSubscribableService
     {
         // TODO: Add your service operations here
         [OperationContract(IsOneWay = false, IsInitiating = true)]
-        void Subscribe();
+        void Subscribe(SubscriptionId id);
 
         [OperationContract(IsOneWay = false, IsTerminating = true)]
         void Unsubscribe();
@@ -77,7 +70,7 @@ namespace WcfServiceLibrary1
             var v = _factory.State;
             ((ICommunicationObject)_myservice).Faulted += MainWCFTestVM_Faulted;
 
-            _myservice.Subscribe();
+            _myservice.Subscribe(SubscriptionId.First);
             //StatusText = "Connected";
             ServiceUp = true;
         }

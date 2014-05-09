@@ -28,7 +28,7 @@ namespace WcfServiceLibrary1
     public interface ISampleClientCallbackContract
     {
         [OperationContract(IsOneWay = true)]
-        void PriceChange(string item, double price, double change);
+        void PriceChange(IEnumerable<object> updatedObjects);
     }
 
     // Use a data contract as illustrated in the sample below to add composite types to service operations.

@@ -101,9 +101,11 @@ namespace Wpf_WcfClient
         {
             get { return _theList;  }
         }
-        public void PriceChange(string item, double price, double change)
+
+        public void PriceChange(IEnumerable<object> updatedObjects)
         {
-            System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => _theList.Add(item + " " + price + " " + change)), null);
+
+            //System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => _theList.Add(item + " " + price + " " + change)), null);
             //;
         }
 
