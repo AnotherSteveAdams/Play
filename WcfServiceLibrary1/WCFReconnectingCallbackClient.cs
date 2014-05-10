@@ -36,6 +36,10 @@ namespace WcfServiceLibrary1
     public class somethingToGo
     {
         public string sss { get; set; }
+        public override string ToString()
+        {
+            return sss;
+        }
     }
 
     // This class has the method named GetKnownTypes that returns a generic IEnumerable. 
@@ -97,9 +101,10 @@ namespace WcfServiceLibrary1
             var v = _factory.State;
             ((ICommunicationObject)_myservice).Faulted += MainWCFTestVM_Faulted;
 
-            var v1 = xxx(SubscriptionId.Second);
+            // var v1 = xxx(SubscriptionId.Second);
             IEnumerable<object> v2 = _myservice.Subscribe(SubscriptionId.First);
             //StatusText = "Connected";
+            v2.ToList().ForEach(p => Console.WriteLine(p));
             ServiceUp = true;
         }
 
