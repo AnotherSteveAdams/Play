@@ -102,10 +102,15 @@ namespace WcfServiceLibrary1
             ((ICommunicationObject)_myservice).Faulted += MainWCFTestVM_Faulted;
 
             // var v1 = xxx(SubscriptionId.Second);
-            IEnumerable<object> v2 = _myservice.Subscribe(SubscriptionId.First);
+            object v2 = _myservice.Subscribe(SubscriptionId.First);
             //StatusText = "Connected";
-            v2.ToList().ForEach(p => Console.WriteLine(p));
+            //v2.ToList().ForEach(p => Console.WriteLine(p));
             ServiceUp = true;
+        }
+
+        public Dictionary<object, object> xxx2()
+        {
+            return new Dictionary<int, string> { { 1, "abc" } };
         }
 
         public IEnumerable<object> xxx(SubscriptionId id)

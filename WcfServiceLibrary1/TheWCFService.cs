@@ -51,7 +51,10 @@ namespace WcfServiceLibrary1
             //return "abc";
             //return new List<somethingToGo> {
               //  new somethingToGo{sss = "to be returned" }}.AsEnumerable<object>();
+            //return new List<object>() { new  somethingToGo{sss = "to be returned" } }.AsEnumerable<object>();
+            var d = new Dictionary<Tuple<int,int>, 
             return new List<object>() { new  somethingToGo{sss = "to be returned" } }.AsEnumerable<object>();
+            //return new Dictionary<int, string> { { 1, "abc" } };
         }
 
         //Clients call this service operation to unsubscribe.
