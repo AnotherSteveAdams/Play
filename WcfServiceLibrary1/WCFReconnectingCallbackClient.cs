@@ -71,14 +71,15 @@ namespace WcfServiceLibrary1
         void CreateChannel()
         {
             var binding = new NetTcpBinding(SecurityMode.None);
-            binding.SendTimeout = new TimeSpan(0, 0, 0, 3);
-            binding.ReceiveTimeout = new TimeSpan(0, 0, 0, 3); ;// TimeSpan.MaxValue;
-            binding.OpenTimeout = new TimeSpan(0, 0, 0, 3);
-            binding.CloseTimeout = new TimeSpan(0, 0, 0, 3); 
+            binding.SendTimeout = new TimeSpan(0, 0, 0, 13);
+            binding.ReceiveTimeout = new TimeSpan(0, 0, 0, 13); ;// TimeSpan.MaxValue;
+            binding.OpenTimeout = new TimeSpan(0, 0, 0, 13);
+            binding.CloseTimeout = new TimeSpan(0, 0, 0, 13); 
             _factory = new DuplexChannelFactory<TServerInterface>(
                     this,
                     binding,
-                    "net.tcp://SteveX1:9966/TheWCFService/IService1"
+                    // "net.tcp://SteveX1:9966/TheWCFService/IService1"
+                     "net.tcp://citlonwksca91.pceservices.net:9966/TheWCFService/IService1"
                 );
             _myservice = _factory.CreateChannel();
             var v = _factory.State;

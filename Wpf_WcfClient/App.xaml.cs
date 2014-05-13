@@ -19,7 +19,7 @@ namespace Wpf_WcfClient
         {
             base.OnStartup(e);
             log4net.Config.XmlConfigurator.Configure();
-            log.Error("OnLoadCompleted setting up error handlers../.");
+            log.Info("OnLoadCompleted setting up error handlers../.");
 
             // Add the event handler for handling UI thread exceptions to the event.
             // Application.ThreadException += new ThreadExceptionEventHandler(ExceptionDialog.UIThreadException);

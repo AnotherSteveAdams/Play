@@ -12,7 +12,7 @@ using WcfServiceLibrary1;
 namespace Wpf_WcfClient
 {
  
-    class MainWCFTestVM : WCFReconnectingCallbackClient<IService1, ISampleClientCallbackContract>, ISampleClientCallbackContract
+    class MainWCFTestVM : WCFReconnectingCallbackClient<IService1, ISampleClientCallbackContract1>, ISampleClientCallbackContract1
     {
         public MainWCFTestVM()
         {
@@ -102,9 +102,10 @@ namespace Wpf_WcfClient
             get { return _theList;  }
         }
 
-        public void PriceChange(IEnumerable<object> updatedObjects)
+        public void PriceChange(List<somethingToGo1> list)
         {
-
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => list.ForEach(l => _theList.Add(l.sss))), null);
+                //   list.ForEach(l => _theList.Add(l.sss))
             //System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => _theList.Add(item + " " + price + " " + change)), null);
             //;
         }

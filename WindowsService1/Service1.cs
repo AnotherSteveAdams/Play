@@ -30,7 +30,7 @@ namespace WindowsService1
         {
             // System.Threading.Thread.Sleep(60000);
             log4net.Config.XmlConfigurator.Configure();
-            Logger.Info("I am starting");
+            Logger.Info("I am startingf");
             // Start up the service.
             _serviceHost = getServiceHost(typeof(IService1), typeof(TheWCFService), 9966);
             Logger.Info("Opening serviceshost");
@@ -77,7 +77,7 @@ namespace WindowsService1
                 //// Logger.Info("Creating service host:  Interface: [" + serviceInterface + "] Service Class: [" +
                   //          serviceClass + "] Port: [" + port + "] Locator: [" + locator + "]");
                 Logger.Info("getServiceHost: 1");
-
+                Logger.Info("h");
                 string baseAddress = formatTCPBaseAddress(serviceClass.Name, port);
                 string fullAddress = baseAddress + "/" + serviceInterface.Name;
                 EventLog.WriteEntry("Service", "Listening on [" + fullAddress + "]", EventLogEntryType.Information, 234);
