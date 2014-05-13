@@ -42,11 +42,12 @@ namespace WcfServiceLibrary1
     public class WCFReconnectingCallbackClient<TServerInterface, TCallbackInterface> : INotifyPropertyChanged
         where TServerInterface : class, IWCFSubscribableService
     {
-        public WCFReconnectingCallbackClient()
+        public WCFReconnectingCallbackClient(string serviceImplementingClassName)
         {
-            Task.Run(() => CreateChannel());
+            _serviceImplementingClassName = serviceImplementingClassName;
+            Task.Run(() => CreateChannel(serviceImplementingClassName));
         }
-
+        private string _serviceImplementingClassName;
         ~WCFReconnectingCallbackClient()
         {
             _myservice.Unsubscribe();
@@ -68,18 +69,20 @@ namespace WcfServiceLibrary1
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected TServerInterface _myservice;
-        void CreateChannel()
+        void CreateChannel(string serviceImplementingClassName)
         {
             var binding = new NetTcpBinding(SecurityMode.None);
             binding.SendTimeout = new TimeSpan(0, 0, 0, 13);
             binding.ReceiveTimeout = new TimeSpan(0, 0, 0, 13); ;// TimeSpan.MaxValue;
             binding.OpenTimeout = new TimeSpan(0, 0, 0, 13);
-            binding.CloseTimeout = new TimeSpan(0, 0, 0, 13); 
+            binding.CloseTimeout = new TimeSpan(0, 0, 0, 13);
+            string url = "net.tcp://citlonwksca91.pceservices.net:9966/" + serviceImplementingClassName + "/" + typeof(TServerInterface).Name;
             _factory = new DuplexChannelFactory<TServerInterface>(
                     this,
                     binding,
                     // "net.tcp://SteveX1:9966/TheWCFService/IService1"
-                     "net.tcp://citlonwksca91.pceservices.net:9966/TheWCFService/IService1"
+                     // "net.tcp://citlonwksca91.pceservices.net:9966/TheWCFService/IService1"
+                     url
                 );
             _myservice = _factory.CreateChannel();
             var v = _factory.State;
@@ -101,7 +104,7 @@ namespace WcfServiceLibrary1
             if (sender is TServerInterface)
            {
                 System.Threading.Thread.Sleep(2000);
-                Task.Run(() => CreateChannel());
+                Task.Run(() => CreateChannel(_serviceImplementingClassName));
             }
         }
     }

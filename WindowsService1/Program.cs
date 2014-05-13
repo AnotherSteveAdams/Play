@@ -14,12 +14,24 @@ namespace WindowsService1
         /// </summary>
         static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[] 
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                var ds = new Service1();
+                ds.StartInDebugMode();
+                while (true)
+                {
+                    System.Threading.Thread.Sleep(1000);
+                }
+            }
+            else
+            {
+                ServiceBase[] ServicesToRun;
+                ServicesToRun = new ServiceBase[] 
             { 
                 new Service1() 
             };
-            ServiceBase.Run(ServicesToRun);
+                ServiceBase.Run(ServicesToRun);
+            }
         }
 
 

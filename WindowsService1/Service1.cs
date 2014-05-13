@@ -20,10 +20,15 @@ namespace WindowsService1
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Service1));
 
 
-        private ServiceHost _serviceHost;
+        private ServiceHost _serviceHost, _serviceHost2;
         public Service1()
         {
             InitializeComponent();
+        }
+
+        public void StartInDebugMode()
+        {
+            OnStart(null);
         }
 
         protected override void OnStart(string[] args)
@@ -33,16 +38,20 @@ namespace WindowsService1
             Logger.Info("I am startingf");
             // Start up the service.
             _serviceHost = getServiceHost(typeof(IService1), typeof(TheWCFService), 9966);
+            _serviceHost2 = getServiceHost(typeof(IService2), typeof(The2ndWCFService), 9966);
             Logger.Info("Opening serviceshost");
             try
             {
+                Logger.Info("Opening serviceshost 1");
                 _serviceHost.Open();
+                Logger.Info("Opening serviceshost 2");
+                _serviceHost2.Open();
             }
             catch (Exception e)
             {
                 Logger.Error("Exception:" + e.Message);
             }
-            Logger.Info("opened serviceshost");
+            Logger.Info("opened serviceshosts");
         }
 
         protected override void OnStop()

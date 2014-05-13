@@ -13,15 +13,15 @@ namespace Wpf_WcfClient
 {
 
     // https://github.com/AnotherSteveAdams/Play.git
-    class MainWCFTestVM : WCFReconnectingCallbackClient<IService1, ISampleClientCallbackContract1>, ISampleClientCallbackContract1
+    class UserControl1VM : WCFReconnectingCallbackClient<IService2, ISampleClientCallbackContract2>, ISampleClientCallbackContract2
     {
-        public MainWCFTestVM()
-            : base("TheWCFService")
+        public UserControl1VM()
+            : base("The2ndWCFService")
         {
-            PropertyChanged += MainWCFTestVM_PropertyChanged;
+            PropertyChanged += UserControl1VM_PropertyChanged;
         }
 
-        void MainWCFTestVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        void UserControl1VM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "ServiceUp")
                 OnPropertyChanged("StatusText");
@@ -86,7 +86,7 @@ namespace Wpf_WcfClient
                             ErrorMessage = "Don't say the word Bloody, okay !  Message was not sent";
                             return;
                         }
-                        _myservice.PublishPriceChange(Message, 123, 32);
+                        _myservice.PublishPriceChange2(Message, 123, 32);
                     });
                 }
                 return _myCommand;
@@ -104,7 +104,7 @@ namespace Wpf_WcfClient
             get { return _theList;  }
         }
 
-        public void PriceChange(List<somethingToGo1> list)
+        public void PriceChange2(List<somethingToGo2> list)
         {
             System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() => list.ForEach(l => _theList.Add(l.sss))), null);
                 //   list.ForEach(l => _theList.Add(l.sss))
