@@ -9,20 +9,20 @@ namespace WcfServiceLibrary1
 {
 
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
-    [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(ISampleClientCallbackContract1))]
-    public interface IService1 
+    [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(ISampleClientCallbackContract2))]
+    public interface IService2
     {
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
-        void PublishPriceChange(string item, double price, double change);
+        void PublishPriceChange2(string item, double price, double change);
+    }
 
-    }
-    [ServiceContract]
-    public interface ISampleClientCallbackContract1
+    public interface ISampleClientCallbackContract2
     {
-        [OperationContract]
-        void PriceChange(List<somethingToGo1> list);
+        [OperationContract(IsOneWay = true)]
+        void PriceChange2(IEnumerable<object> updatedObjects);
     }
-    public class somethingToGo1
+
+    public class somethingToGo2
     {
         public string sss { get; set; }
         public override string ToString()
@@ -30,5 +30,4 @@ namespace WcfServiceLibrary1
             return sss;
         }
     }
-
 }

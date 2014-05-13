@@ -13,47 +13,30 @@ using WcfServiceLibrary1;
 
 namespace WcfServiceLibrary1
 {
-    public enum SubscriptionId { First, Second } ;
+    //public enum SubscriptionId { First, Second } ;
 
-    [ServiceKnownType("GetKnownTypes", typeof(Helper))]
     [ServiceContract(SessionMode = SessionMode.Required)]
     public interface IWCFSubscribableService
     {
         // TODO: Add your service operations here
         [OperationContract(IsOneWay = false, IsInitiating = true)]
-        IEnumerable<object> Subscribe(SubscriptionId id);
+        void Subscribe();
 
         [OperationContract(IsOneWay = false, IsTerminating = true)]
         void Unsubscribe();
-
     }
-    [ServiceContract]
-    public interface ISampleClientCallbackContract
-    {
-        [OperationContract]
-        void PriceChange(IEnumerable<object> list);
-    }
-    public class somethingToGo
-    {
-        public string sss { get; set; }
-        public override string ToString()
-        {
-            return sss;
-        }
-    }
-
-    // This class has the method named GetKnownTypes that returns a generic IEnumerable. 
-    static class Helper
-    {
-        public static IEnumerable<Type> GetKnownTypes(ICustomAttributeProvider provider)
-        {
-            System.Collections.Generic.List<System.Type> knownTypes =
-                new System.Collections.Generic.List<System.Type>();
-            // Add any types to include here.
-            knownTypes.Add(typeof(somethingToGo));
-            return knownTypes;
-        }
-    }
+    //// This class has the method named GetKnownTypes that returns a generic IEnumerable. 
+    //static class Helper
+    //{
+    //    public static IEnumerable<Type> GetKnownTypes(ICustomAttributeProvider provider)
+    //    {
+    //        System.Collections.Generic.List<System.Type> knownTypes =
+    //            new System.Collections.Generic.List<System.Type>();
+    //        // Add any types to include here.
+    //        knownTypes.Add(typeof(somethingToGo));
+    //        return knownTypes;
+    //    }
+    //}
 
 
     public class WCFReconnectingCallbackClient<TServerInterface, TCallbackInterface> : INotifyPropertyChanged
@@ -102,25 +85,11 @@ namespace WcfServiceLibrary1
             ((ICommunicationObject)_myservice).Faulted += MainWCFTestVM_Faulted;
 
             // var v1 = xxx(SubscriptionId.Second);
-            object v2 = _myservice.Subscribe(SubscriptionId.First);
+            _myservice.Subscribe();
             //StatusText = "Connected";
             //v2.ToList().ForEach(p => Console.WriteLine(p));
             ServiceUp = true;
         }
-
-        public Dictionary<object, object> xxx2()
-        {
-            return new Dictionary<int, string> { { 1, "abc" } };
-        }
-
-        public IEnumerable<object> xxx(SubscriptionId id)
-        {
-            return new List<somethingToGo> {
-                new somethingToGo{sss = "to be returned" }};
-        }
-        // Add the unhandled exception handlers
-        // remove ping in interface
-        // make an base class to wrap up the reconnect logic.
 
         DuplexChannelFactory<TServerInterface> _factory;
         void MainWCFTestVM_Faulted(object sender, EventArgs e)

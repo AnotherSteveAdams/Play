@@ -16,28 +16,28 @@ namespace WCFPlay
 
             //var x = s.GetData(12);
 
-            var binding = new NetTcpBinding(SecurityMode.None);
-            binding.SendTimeout = new TimeSpan(0, 0, 0, 30);
-            binding.ReceiveTimeout = TimeSpan.MaxValue;
-            var factory = new DuplexChannelFactory<IService1>(
-                    new CallbackClass(),
-                    binding,
-                    "net.tcp://SteveX1:9966/TheWCFService/IService1"
-                );
-            IService1 c = factory.CreateChannel();
-            c.Subscribe(SubscriptionId.First);
-            c.PublishPriceChange("ABC",123,32);
-            System.Threading.Thread.Sleep(1000000);
+            //var binding = new NetTcpBinding(SecurityMode.None);
+            //binding.SendTimeout = new TimeSpan(0, 0, 0, 30);
+            //binding.ReceiveTimeout = TimeSpan.MaxValue;
+            //var factory = new DuplexChannelFactory<IService1>(
+            //        new CallbackClass(),
+            //        binding,
+            //        "net.tcp://SteveX1:9966/TheWCFService/IService1"
+            //    );
+            //IService1 c = factory.CreateChannel();
+            //c.Subscribe(SubscriptionId.First);
+            //c.PublishPriceChange("ABC",123,32);
+            //System.Threading.Thread.Sleep(1000000);
         }
     }
    
-    class CallbackClass : ISampleClientCallbackContract
-    {
+    //class CallbackClass : ISampleClientCallbackContract
+    //{
 
-        [OperationContract(IsOneWay = true)]
-        public void PriceChange(IEnumerable<object> updatedObjects)
-        {
-            //throw new NotImplementedException();
-        }
-    }
+    //    [OperationContract(IsOneWay = true)]
+    //    public void PriceChange(IEnumerable<object> updatedObjects)
+    //    {
+    //        //throw new NotImplementedException();
+    //    }
+    //}
 }
